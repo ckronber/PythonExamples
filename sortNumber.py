@@ -6,54 +6,49 @@ randnums= np.random.randint(1,10000,3000)
 points = []
 num = 1
 
-
 def findNumber(arr, k):
     arr.sort()
     midpoint = int(len(arr)/2)
-    uptimes = 1
+    TotalVal = int(midpoint)
 
     print(arr)
     
-    while(1):
-        if(arr[midpoint] > k):
-            points.append(midpoint)
-            
-            if(midpoint == 1):
-                midpoint -= 1
+    while(TotalVal < (len(arr)-1) and (TotalVal > 0)):
+        if(arr[TotalVal] > k):
+            points.append(TotalVal)
+            if(midpoint >= 1):
+                midpoint = int(midpoint/2)
+                TotalVal -= midpoint
             else:
-                midpoint -= (midpoint/2)
-
-            count = 0
-            for point in points:
-                if(midpoint == point):
-                    count+=1
-                if(count > num):
-                    return points, "NO"
+                TotalVal -= 1
             
-        elif(arr[midpoint] < k):
-            uptimes += 1
-            points.append(midpoint)
-            if((len(arr)/(2**uptimes)) >= 1):
-                midpoint += int(len(arr)/(2**uptimes))
-            elif midpoint < len(arr)-1:
-                if(arr[midpoint] == k):
-                    return "YES"
-                else:
-                    midpoint +=1
-            else:
-                return "NO"
-
-            count = 0
-            for point in points:
-                if(midpoint == point):
-                    count+=1
-                if(count > num):
-                    return points,"NO"
-            
-        else:
-            if k == arr[midpoint]:
+            if(arr[TotalVal] == k):
                 return "YES"
-            else:
-                return points,"NO"
 
-print(findNumber(randnums,9998))
+            count = 0
+            for point in points:
+                if(TotalVal == point):
+                    count+=1
+                if(count > num):
+                    return "NO"
+
+        elif(arr[TotalVal] < k):
+            points.append(TotalVal)
+            if(midpoint >= 1):
+                midpoint = int(midpoint/2)
+                TotalVal += midpoint
+            else:
+                TotalVal += 1
+
+            if(arr[int(TotalVal)] == k):
+                return "YES"
+
+            count = 0
+            for point in points:
+                if(TotalVal == point):
+                    count+=1
+                if(count > num):
+                    return "NO"
+    return "NO"
+
+print(findNumber(randnums,5554))
